@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pong Game</title>
+    <style>
+        canvas { border: 1px solid black; }
+        body { display: flex; flex-direction: column; align-items: center; }
+    </style>
+</head>
+<body>
+    <h1>Pong Game</h1>
+    <p>Player A: W (up), S (down) | Player B: ArrowUp, ArrowDown</p>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let paddle_a_y = 250, paddle_b_y = 250;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'w') paddle_a_y -= 20;
+            if (e.key === 's') paddle_a_y += 20;
+            if (e.key === 'ArrowUp') paddle_b_y -= 20;
+            if (e.key === 'ArrowDown') paddle_b_y += 20;
+            paddle_a_y = Math.max(0, Math.min(600 - 100, paddle_a_y));
+            paddle_b_y = Math.max(0, Math.min(600 - 100, paddle_b_y));
+        });
+
+        function draw(data) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw paddles
+            ctx.fillRect(10, data.paddle_a.y, 20, data.paddle_a.height);
+            ctx.fillRect(770, data.paddle_b.y, 20, data.paddle_b.height);
+            // Draw ball
+            ctx.beginPath();
+            ctx.arc(data.ball.x, data.ball.y, 10, 0, Math.PI * 2);
+            ctx.fill();
+            // Draw scores
+            ctx.font = '20px Arial';
+            ctx.fillText(`Player A: ${data.scores.a}`, 50, 50);
+            ctx.fillText(`Player B: ${data.scores.b}`, 650, 50);
+        }
+
+        function update() {
+            fetch('/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paddle_a_y, paddle_b_y })
+            })
+            .then(response => response.json())
+            .then(data => {
+                draw(data);
+                requestAnimationFrame(update);
+            });
+        }
+
+        update();
+    </script>
+</body>
+</html>
