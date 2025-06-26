@@ -4,9 +4,13 @@ INSTRUCTIONS ON WHAT THE CODE DOES BELOW
 
 LINES 1-5: States flask to create loop, render_template to serve HTML, jsonify to return JSON files, request to handle incoming data
 
-LINES 6-12: Sets the speed of the ball, creates the ball itself and the properties, height , etc; creates the dimensions of the paddles for both players, sets the scoreboard format for both players, @app.route('/'), this is a route decorator, whenever a user runs the function this should appear: def index():
+LINES 6-12: Sets the speed of the ball, creates the ball itself and the properties, height , etc; creates the dimensions of the paddles for both players, sets the scoreboard format for both players, `@app.route('/')`, this is a route decorator, whenever a user runs the function this should appear:
+
+```
+def index():
     return render_template('index.html')
-    
+```    
+
 LINES 13-18: def index(): defines the python function named index, This function will be triggered when someone visits the root route / of the web app (like http://localhost:5000/), thanks to the decorator @app.route('/') above it. return render_template('index.html')Tells Flask to return an HTML page called index.html to the user. Flask will look for this file inside a folder named templates/. @app.route('/update', methods=['GET', 'POST']) Sets up another route in Flask, this time at /update. It accepts both GET (default) and POST (when the frontend sends data). The function update() will run when the browser makes a request to /update. def update(): Defines the update() function to handle logic every time /update is requested. This function handles the movement of the paddles, moves the ball, updates positioning and scoring and returns the new games state as JSON. global ball, paddle_a, paddle_b, scores: This tells python that inside the function you want to modify the global game state variables and not create new local variables.
 
 
