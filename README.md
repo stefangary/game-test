@@ -6,7 +6,7 @@ LINES 1-5: States flask to create loop, render_template to serve HTML, jsonify t
 
 LINES 6-12: Sets the speed of the ball, creates the ball itself and the properties, height , etc; creates the dimensions of the paddles for both players, sets the scoreboard format for both players, `@app.route('/')`, this is a route decorator, whenever a user runs the function this should appear:
 
-```
+```python
 def index():
     return render_template('index.html')
 ```    
